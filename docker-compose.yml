@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: djibril-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=sqlite:///djibril.db
+      - SIGNAL_OUTPUT_DIR=/app/mql5/signals
+      - LOG_DIR=/app/logs
+    volumes:
+      - signal_data:/app/mql5/signals
+      - log_data:/app/logs
+      - db_data:/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - djibril
+
+  redis:
+    image: redis:7-alpine
+    container_name: djibril-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - djibril
+
+  nginx:
+    image: nginx:alpine
+    container_name: djibril-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - djibril
+
+volumes:
+  signal_data:
+  log_data:
+  db_data:
+  redis_data:
+
+networks:
+  djibril:
+    driver: bridge
