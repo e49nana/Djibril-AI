@@ -1,5 +1,8 @@
 # 🛢️ Djibril AI Trading System
 
+[![CI](https://github.com/e49nana/Djibril-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/e49nana/Djibril-AI/actions/workflows/ci.yml)
+
+
 **AI-powered crude oil trading based on real-time geopolitical analysis.**
 
 Analyzes Iran/Middle East tensions via Claude AI, combines with technical and sentiment signals, and executes WTI/Brent trades automatically through a MetaTrader 5 Expert Advisor.
