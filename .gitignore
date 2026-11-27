@@ -6,3 +6,9 @@ dist/
 *.db
 logs/
 .DS_Store
+
+# Generated at runtime (signal files for the MT5 EA, test coverage)
+mql5/signals/
+backend/mql5/signals/
+.coverage
+htmlcov/
