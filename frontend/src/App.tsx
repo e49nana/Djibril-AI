@@ -131,7 +131,7 @@ export default function App() {
           Djibril AI v2.0 · Precision before profit · Powered by Claude Opus
         </p>
         <p className="text-[10px] text-dj-text-muted/50 mt-1">
-          ExMachina Trading Systems · github.com/e49nana
+          AlgoSphere Quant · github.com/e49nana
         </p>
       </footer>
 

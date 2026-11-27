@@ -3,7 +3,7 @@
 //| Reads and parses JSON trade signals from the Python backend.      |
 //| Part of Djibril AI Trading System v1.0                             |
 //+------------------------------------------------------------------+
-#property copyright "Djibril AI / ExMachina Trading Systems"
+#property copyright "Djibril AI / AlgoSphere Quant"
 #property link      "https://github.com/e49nana"
 #property version   "1.00"
 #property strict

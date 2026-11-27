@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════
-# OilGeo AI — Python Dependencies
+# Djibril AI — Python Dependencies
 # ═══════════════════════════════════════════════════
 
 # Core
