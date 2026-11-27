@@ -38,8 +38,9 @@ pip install -r requirements.txt
 ## Step 3: Run Tests (1 min)
 
 ```bash
-python -m pytest tests/ -v
-# Expected: 98 passed
+pip install -r requirements-dev.txt
+pytest -q
+# Expected: 106 passed
 ```
 
 ## Step 4: Start the API Server (1 min)

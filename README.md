@@ -29,49 +29,43 @@ Analyzes Iran/Middle East tensions via Claude AI, combines with technical and se
 
 ## ⚡ Quick Start (10 minutes)
 
-### 1. Clone & Install
+### 1. Clone & install
 
 ```bash
-git clone https://github.com/e49nana/djibril-ai.git
-cd djibril-ai
+git clone https://github.com/e49nana/Djibril-AI.git
+cd Djibril-AI
+cp .env.example .env          # set ANTHROPIC_API_KEY (required)
 
-# Backend
 cd backend
 pip install -r requirements.txt
-
-# Copy and edit environment
-cp ../.env.example ../.env
-# Edit .env with your ANTHROPIC_API_KEY (required)
 ```
 
-### 2. Run Backend
+### 2. Run the backend (from `backend/`)
 
 ```bash
-cd backend
 uvicorn api.api_server:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 3. Run Dashboard
+### 3. Run the dashboard (second terminal, from the repository root)
 
 ```bash
 cd frontend
-npm install
-npm run dev
-# Open http://localhost:5173
+npm ci
+npm run dev                   # http://localhost:5173
 ```
 
-### 4. Setup MT5 EA
+### 4. Set up the MT5 EA
 
-1. Copy `mql5/DjibrilAI_EA.mq5` and `mql5/Include/` to your MT5 `MQL5/Experts/` folder
-2. Copy `mql5/signals/` path to MT5's `MQL5/Files/signals/`
-3. Compile in MetaEditor
-4. Attach to XTIUSD (or your broker's WTI symbol) chart
+1. Copy `mql5/DjibrilAI_EA.mq5` and `mql5/Include/` into your MT5 `MQL5/Experts/` folder.
+2. In `.env`, set `SIGNAL_OUTPUT_DIR` to the terminal's `MQL5/Files/signals` folder (or `Common/Files/signals`): the EA reads `signals/latest_signal.json` there.
+3. Compile in MetaEditor.
+4. Attach the EA to an XTIUSD chart (or your broker's WTI symbol).
 
-### 5. Test
+### 5. Run the tests (from `backend/`)
 
 ```bash
-cd backend
-python -m pytest tests/ -v  # Should pass 98 tests
+pip install -r requirements-dev.txt
+pytest -q
 ```
 
 ## 🏗️ Architecture
@@ -171,23 +165,30 @@ EOF
 sudo systemctl enable --now djibril
 ```
 
-## 📊 Test Results
+## 📊 Tests
 
 ```
-98 tests passed across 10 test files:
-  test_models.py       — 12 tests (config, Pydantic models)
-  test_logger.py       —  6 tests (structured logging, @timed)
-  test_rss.py          —  7 tests (RSS dedup, filtering, SQLite)
-  test_worldmonitor.py —  7 tests (event parsing, relevance)
-  test_news_fetcher.py —  6 tests (cache, dedup, queue)
-  test_claude_scorer.py—  9 tests (prompt, parse, fallback)
-  test_sentiment.py    —  6 tests (keyword scoring, bounds)
-  test_technical.py    — 11 tests (RSI, ATR, EMA, SuperTrend)
-  test_risk_engine.py  — 11 tests (composite, VIX, conflicts)
-  test_kelly.py        —  7 tests (sizing, caps, lot types)
-  test_composer.py     —  9 tests (SL/TP, filters, session)
-  test_integration.py  —  7 tests (full pipeline, e2e)
+$ cd backend && pytest -q
+106 passed in ~1 s
 ```
+
+No network access and no API key needed: external APIs are mocked and every run writes to a temporary directory. CI runs the suite on Python 3.12 and 3.13 and builds the dashboard on every push and pull request.
+
+| File | Tests | Covers |
+|---|---:|---|
+| `test_api.py` | 7 | REST endpoints, API-key auth |
+| `test_models.py` | 13 | config, Pydantic models, signal JSON format |
+| `test_logger.py` | 6 | structured logging, `@timed` |
+| `test_rss.py` | 7 | RSS dedup, filtering, SQLite |
+| `test_worldmonitor.py` | 7 | event parsing, relevance |
+| `test_news_fetcher.py` | 6 | cache, dedup, queue |
+| `test_claude_scorer.py` | 9 | prompt, parsing, fallback |
+| `test_sentiment.py` | 6 | keyword scoring, bounds |
+| `test_technical.py` | 11 | RSI, ATR, EMA, SuperTrend |
+| `test_risk_engine.py` | 11 | composite score, VIX, conflicts |
+| `test_kelly.py` | 7 | sizing, caps, lot types |
+| `test_composer.py` | 9 | SL/TP, filters, session |
+| `test_integration.py` | 7 | full pipeline, end to end |
 
 ## ⚠️ Disclaimer
 

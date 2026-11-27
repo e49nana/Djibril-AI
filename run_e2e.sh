@@ -16,6 +16,7 @@ echo "════════════════════════�
 echo ""
 echo "▸ Running test suite..."
 cd "$BACKEND_DIR"
+pip install -q -r requirements-dev.txt
 python -m pytest tests/ -v --tb=short
 echo ""
 echo "✓ All tests passed"
