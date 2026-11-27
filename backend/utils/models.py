@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, computed_field
+from pydantic import BaseModel, Field, computed_field, field_serializer
 
 
 # ═══════════════════════════════════════════════════
@@ -75,7 +75,10 @@ class NewsItem(BaseModel):
         """SHA-256 hash of the title for deduplication."""
         return hashlib.sha256(self.title.lower().strip().encode()).hexdigest()[:16]
 
-    model_config = {"json_encoders": {datetime: lambda v: v.isoformat()}}
+    @field_serializer("published_at", "fetched_at", when_used="json-unless-none")
+    def _serialize_datetime(self, value: datetime) -> str:
+        """ISO 8601 with explicit offset (the MQL5 EA parses this format)."""
+        return value.isoformat()
 
 
 # ═══════════════════════════════════════════════════
@@ -187,7 +190,10 @@ class TradeSignal(BaseModel):
     source: str = "djibril-ai"
     version: str = "1.0.0"
 
-    model_config = {"json_encoders": {datetime: lambda v: v.isoformat()}}
+    @field_serializer("created_at", "expires_at", when_used="json-unless-none")
+    def _serialize_datetime(self, value: datetime) -> str:
+        """ISO 8601 with explicit offset (the MQL5 EA parses this format)."""
+        return value.isoformat()
 
 
 # ═══════════════════════════════════════════════════
@@ -210,4 +216,7 @@ class WSMessage(BaseModel):
     payload: dict = Field(default_factory=dict)
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-    model_config = {"json_encoders": {datetime: lambda v: v.isoformat()}}
+    @field_serializer("timestamp", when_used="json-unless-none")
+    def _serialize_datetime(self, value: datetime) -> str:
+        """ISO 8601 with explicit offset (the MQL5 EA parses this format)."""
+        return value.isoformat()

@@ -103,6 +103,14 @@ class TestTradeSignal:
         assert "SIG-002" in data
         assert "SELL" in data
 
+    def test_timestamps_keep_explicit_utc_offset(self) -> None:
+        """The MQL5 EA parses created_at / expires_at: keep the +00:00 form."""
+        t = datetime(2026, 11, 27, 4, 2, 10, tzinfo=timezone.utc)
+        data = TradeSignal(signal_id="SIG-003", created_at=t, expires_at=t).model_dump_json()
+        assert '"created_at":"2026-11-27T04:02:10+00:00"' in data
+        assert '"expires_at":"2026-11-27T04:02:10+00:00"' in data
+        assert '"expires_at":null' in TradeSignal(signal_id="SIG-004").model_dump_json()
+
 
 class TestWSMessage:
     def test_heartbeat(self) -> None:
