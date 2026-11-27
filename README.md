@@ -123,10 +123,12 @@ See `.env.example` for the full list.
 ## 🐳 Docker Deployment
 
 ```bash
-docker-compose up -d
+cp .env.example .env                          # then set ANTHROPIC_API_KEY
+(cd frontend && npm ci && npm run build)      # nginx serves frontend/dist
+docker compose up -d
 ```
 
-Services: `backend` (FastAPI), `redis` (cache), `nginx` (reverse proxy).
+Services: `backend` (FastAPI), `redis` (cache), `nginx` (reverse proxy + dashboard). SQLite databases live in the `db_data` volume (`/app/data`), signal files in `signal_data`.
 
 ## 📡 API Endpoints
 

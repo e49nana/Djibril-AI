@@ -11,12 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Application code
+# Application code (mql5/signals is created below and mounted as a volume)
 COPY backend/ ./backend/
-COPY mql5/signals/ ./mql5/signals/
 
-# Create log and signal directories
-RUN mkdir -p /app/logs /app/mql5/signals
+# Create log, signal and data directories
+RUN mkdir -p /app/logs /app/mql5/signals /app/data
 
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
