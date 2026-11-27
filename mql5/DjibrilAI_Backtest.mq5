@@ -3,7 +3,7 @@
 //| Reads historical signals from CSV, simulates entries/exits,        |
 //| and generates a performance report.                                |
 //+------------------------------------------------------------------+
-#property copyright "Djibril AI / ExMachina Trading Systems"
+#property copyright "Djibril AI / AlgoSphere Quant"
 #property link      "https://github.com/e49nana"
 #property version   "1.00"
 #property description "Backtesting harness for Djibril AI signals"
